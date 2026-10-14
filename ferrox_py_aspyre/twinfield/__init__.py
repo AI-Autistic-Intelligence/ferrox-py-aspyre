@@ -10,6 +10,11 @@ from .streaming_parser import (
     TwinfieldEntryLine,
 )
 from .client import TwinfieldSoapClient
+from .checkpoint_recovery import (
+    TwinfieldCheckpointTracker,
+    TwinfieldResilientStreamer,
+    StreamCheckpoint,
+)
 
 __all__ = [
     "TwinfieldSessionPooler",
@@ -20,4 +25,7 @@ __all__ = [
     "TwinfieldTransaction",
     "TwinfieldEntryLine",
     "TwinfieldSoapClient",
+    "TwinfieldCheckpointTracker",
+    "TwinfieldResilientStreamer",
+    "StreamCheckpoint",
 ]
