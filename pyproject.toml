@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ferrox-py-aspyre"
+version = "1.0.0"
+description = "Enterprise Financial Integration Engine for Aspyre: Exact Online Fair-Queuing, Twinfield Stateful Session Pooling, Dutch SBR/BTW Validation, Anti-Ping-Pong Sync."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Principal Software Architect & Financial Systems Integrator" }
+]
+dependencies = [
+    "ferrox-py>=1.1.0",
+    "pydantic>=2.0",
+    "redis>=5.0.0",
+    "httpx>=0.24.0",
+    "structlog>=23.1.0"
+]
+
+[project.scripts]
+aspyre-ferrox = "ferrox_py_aspyre.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "fakeredis[lua]>=2.20.0",
+    "mypy>=1.5.0",
+    "ruff>=0.1.0"
+]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+check_untyped_defs = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["ferrox_py_aspyre"]
+
+[tool.ruff.lint]
+ignore = ["E501", "F401"]

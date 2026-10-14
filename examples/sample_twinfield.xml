@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browse>
+  <browse_data>
+    <transaction office="NL01" code="VRK" number="20260001" date="2026-03-31">
+      <line id="1">
+        <account>1300</account>
+        <debit>242.00</debit>
+        <credit>0.00</credit>
+        <vatcode></vatcode>
+        <vatamount>0.00</vatamount>
+        <description>Debiteuren Factuur Aspyre Tech BV</description>
+      </line>
+      <line id="2">
+        <account>8000</account>
+        <debit>0.00</debit>
+        <credit>200.00</credit>
+        <vatcode>VH</vatcode>
+        <vatamount>42.00</vatamount>
+        <description>AI Accounting Automation Services</description>
+      </line>
+      <line id="3">
+        <account>1500</account>
+        <debit>0.00</debit>
+        <credit>42.00</credit>
+        <vatcode>VH</vatcode>
+        <vatamount>0.00</vatamount>
+        <description>Te betalen BTW hoog 21%</description>
+      </line>
+    </transaction>
+    <transaction office="NL01" code="INK" number="20260002" date="2026-03-31">
+      <line id="1">
+        <account>4500</account>
+        <debit>100.00</debit>
+        <credit>0.00</credit>
+        <vatcode>VL</vatcode>
+        <vatamount>9.00</vatamount>
+        <description>Vakliteratuur en Boeken</description>
+      </line>
+      <line id="2">
+        <account>1510</account>
+        <debit>9.00</debit>
+        <credit>0.00</credit>
+        <vatcode>VL</vatcode>
+        <vatamount>0.00</vatamount>
+        <description>Voorbelasting BTW laag 9%</description>
+      </line>
+      <line id="3">
+        <account>1600</account>
+        <debit>0.00</debit>
+        <credit>109.00</credit>
+        <vatcode></vatcode>
+        <vatamount>0.00</vatamount>
+        <description>Crediteuren Uitgeverij BV</description>
+      </line>
+    </transaction>
+  </browse_data>
+</browse>
