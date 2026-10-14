@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:7.2-alpine
+    container_name: aspyre-testbed-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+
+  toxiproxy:
+    image: ghcr.io/shopify/toxiproxy:2.7.0
+    container_name: aspyre-testbed-toxiproxy
+    ports:
+      - "8474:8474"  # Toxiproxy API
+      - "8475:8475"  # Proxied Mock ERP port with chaos injection
+    depends_on:
+      - mock-erp
+
+  mock-erp:
+    build:
+      context: ../..
+      dockerfile: infrastructure/testbed/Dockerfile.mockerp
+    container_name: aspyre-testbed-mockerp
+    ports:
+      - "8080:8080"
