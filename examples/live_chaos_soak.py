@@ -12,7 +12,10 @@ from decimal import Decimal
 import random
 import time
 from typing import Any
+import logging
+import os
 import fakeredis.aioredis
+import structlog
 
 from ferrox_py_aspyre.exact.concurrency_lock import ExactConcurrencyManager
 from ferrox_py_aspyre.exact.rate_limiter import ExactRateLimiter, TaskPriority
@@ -28,13 +31,27 @@ async def run_live_chaos_soak(
     simulated_network_jitter_ms: tuple[int, int] = (5, 25),
     packet_loss_rate: float = 0.01,
 ):
+    # Silence verbose debug logs for high-density benchmark run
+    logging.basicConfig(level=logging.WARNING)
+    logging.getLogger("ferrox_py_aspyre").setLevel(logging.WARNING)
+    structlog.configure(
+        wrapper_class=structlog.make_filtering_bound_logger(logging.WARNING),
+    )
+
     print("=" * 85)
     print("🔥 HIGH-DENSITY LIVE CHAOS & SOAK TEST HARNESS (ASPYRE SCALE SIMULATION)")
     print(f"   Offices: {num_offices} | Entities: {total_tenants} | Jitter: {simulated_network_jitter_ms}ms | Loss: {packet_loss_rate:.1%}")
     print("=" * 85)
 
-    server = fakeredis.FakeServer()
-    redis_client = fakeredis.aioredis.FakeRedis(server=server, decode_responses=False)
+    redis_url = os.getenv("REDIS_URL")
+    if redis_url:
+        import redis.asyncio as aioredis
+        redis_client = aioredis.from_url(redis_url, decode_responses=False)
+        print(f"  ✓ Connected to live Redis instance at {redis_url}")
+    else:
+        server = fakeredis.FakeServer()
+        redis_client = fakeredis.aioredis.FakeRedis(server=server, decode_responses=False)
+        print("  ✓ Connected to in-process AsyncIO Redis engine (fakeredis)")
 
     concurrency_mgr = ExactConcurrencyManager(redis_client, default_ttl_ms=5000)
     rate_limiter = ExactRateLimiter(redis_client)
@@ -117,6 +134,8 @@ async def run_live_chaos_soak(
         served_offices[job.office_id] += 1
         committed_entities.add(job.division_id)
         processed_count += 1
+        if processed_count % 100 == 0:
+            print(f"  -> Progress: {processed_count}/{target_sample} jobs completed under simulated network jitter...")
         await lock.release()
 
     process_duration = time.perf_counter() - t0_process
